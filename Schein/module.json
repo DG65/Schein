@@ -1,0 +1,17 @@
+{
+  "id": "{00F44496-648D-4AE0-9AC8-A6002EFCEF54}",
+  "library": "{B4C508FF-14C4-47C2-8EC4-7AF933A3CCD0}",
+  "name": "Schein",
+  "type": 3,
+  "vendor": "",
+  "aliases": [
+    "Schein",
+    "DG65 Toolkit Schein",
+    "Anwesenheitssimulation"
+  ],
+  "url": "https://github.com/DG65/Schein",
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "SCHEIN"
+}

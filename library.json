@@ -1,0 +1,12 @@
+{
+  "id": "{B4C508FF-14C4-47C2-8EC4-7AF933A3CCD0}",
+  "author": "DG65",
+  "name": "DG65 Toolkit Schein",
+  "url": "https://github.com/DG65/Schein",
+  "compatibility": {
+    "version": "9.0"
+  },
+  "version": "0.1.0",
+  "build": 1,
+  "date": 1788825600
+}
