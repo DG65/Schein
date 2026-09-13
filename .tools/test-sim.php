@@ -247,7 +247,8 @@ $expected = ['18:05 #100=true RequestAction', '18:13 #101=true RequestAction', '
 sort($acts); $exp = $expected; sort($exp);
 check('Schaltfolge exakt wie erwartet (Uhrzeit + Versatz, Sonnenuntergangs-Abstand, Dimmer per SetValue ohne Aktion)', $acts === $exp, "\n      ist:  " . implode(' | ', $acts) . "\n      soll: " . implode(' | ', $exp));
 check('Jede Schaltung genau einmal', count($acts) === count($expected));
-check('LastAction nennt die letzte Schaltung mit Vorbild-Tag', str_contains($m->GetValue('LastAction'), 'Wohnzimmer → Aus') && str_contains($m->GetValue('LastAction'), 'Vorbild Mo 10.08.'), $m->GetValue('LastAction'));
+check('LastAction nennt die letzte Schaltung mit Vorbild-Tag (TT.MM.JJJJ, Regel 9b)', str_contains($m->GetValue('LastAction'), 'Wohnzimmer → Aus') && str_contains($m->GetValue('LastAction'), 'Vorbild Mo 10.08.2026'), $m->GetValue('LastAction'));
+check('Kein Maschinen-Datum JJJJ-MM-TT in sichtbaren Texten (LastAction/NextAction/Debug)', !preg_match('/\d{4}-\d{2}-\d{2}/', $m->GetValue('LastAction') . $m->GetValue('NextAction') . implode(' ', $m->debug)), implode(' | ', array_slice($m->debug, -3)));
 check('NextAction: heute nichts mehr', str_contains($m->GetValue('NextAction'), 'keine weitere'), $m->GetValue('NextAction'));
 check('Kein Fehler-Log', count($GLOBALS['LOG']) === 0, implode(' | ', $GLOBALS['LOG']));
 
@@ -331,6 +332,8 @@ $txt = formText($f);
 check('Astro-Status sichtbar (✅, da Location Control im Test vorhanden)', str_contains($txt, 'Sonnenauf-/-untergang verfügbar'));
 check('Kanal-Zusammenfassung nennt Schaltvorgänge', str_contains($txt, 'Schaltvorgänge seit'));
 check('Kanalliste hat genau eine auto-Spalte (Zielvariable)', substr_count($txt, '"width":"auto"') === 1);
+check('Kein Maschinen-Datum JJJJ-MM-TT im Formular (Regel 9b)', !preg_match('/\d{4}-\d{2}-\d{2}/', $txt));
+check('Keine Ersatz-Umlaute (ue/ae/oe) in sichtbaren Formulartexten', !preg_match('/\b(fuer|ueber|zurueck|aendern|loeschen|Rueck)/i', $txt));
 check('Kein Link-Button trägt die URL direkt in "link"', !preg_match('/"link":"http/', $txt));
 $m->AckPurposeIntro(); $m->AckNews(); $m->AckForumHint();
 $f2 = form($m);

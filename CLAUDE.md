@@ -65,6 +65,10 @@
 9. **Sprachregel:** alles Nutzersichtbare deutsch. **Keine eigene Anlage als Norm:** Beispiele
    („Wohnzimmerlicht", „Abwesend") nur als „z. B.", keine IDs, Defaults neutral (Trigger 0,
    Simulation aus).
+10. **Datum sichtbar immer TT.MM.JJJJ** (SUITE.md Store-Checkliste 9b, Dietmar 13.09.2026) —
+    `fmtDay()` für den Vorbild-Tag, `date('d.m.Y …')` für Zeitstempel, auch im `SendDebug()`.
+    Der Vorbild-Tag bleibt intern `Y-m-d` (Schlüssel im Tagesplan-Attribut, `date()`-Vergleiche),
+    nur die Anzeige wandelt. Der Prüfstand schlägt bei `JJJJ-MM-TT` in Formular/Status/Debug an.
 
 ## Prüfen
 

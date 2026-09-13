@@ -3,6 +3,15 @@
 Alle nennenswerten Änderungen an diesem Modul werden hier dokumentiert.
 Format angelehnt an [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
+## [0.1.1] - 2026-09-13
+
+### Changed
+- Alle nutzersichtbaren Datumsangaben im Format TT.MM.JJJJ (Vorbild-Tag in „Letzte Schaltung",
+  Vorschau, Start-Meldung, Statuszeile, Kanal-Zusammenfassung, Debug) — Verbund-Regel 9b aus
+  SUITE.md (Dietmar, 13.09.2026). Intern bleibt der Vorbild-Tag maschinell (JJJJ-MM-TT im
+  Tagesplan-Attribut), nur die Anzeige wandelt um. Prüfstand wacht jetzt über Datumsformat und
+  echte Umlaute in Formular- und Statustexten.
+
 ## [0.1.0] - 2026-09-08
 
 ### Added

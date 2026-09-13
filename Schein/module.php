@@ -198,7 +198,7 @@ class Schein extends IPSModule
     {
         if ($active === $this->isActive()) {
             return $active
-                ? 'ℹ️ Die Simulation läuft bereits (seit ' . date('d.m. H:i', $this->ReadAttributeInteger('ActiveSince')) . ' Uhr).'
+                ? 'ℹ️ Die Simulation läuft bereits (seit ' . date('d.m.Y H:i', $this->ReadAttributeInteger('ActiveSince')) . ' Uhr).'
                 : 'ℹ️ Die Simulation ist bereits aus — Schein lernt gerade.';
         }
         if ($active && count($this->playableChannels()) === 0) {
@@ -614,7 +614,7 @@ class Schein extends IPSModule
             $this->setStringIfChanged('LastAction', date('H:i:s', $this->now()) . ' Uhr: ⚠️ ' . $label . ' fehlgeschlagen');
             return;
         }
-        $this->SendDebug('Abspielen', $label . ' (Vorbild ' . $refDate . ')', 0);
+        $this->SendDebug('Abspielen', $label . ' (Vorbild ' . $this->fmtDay($refDate) . ')', 0);
         $this->setStringIfChanged('LastAction', date('H:i:s', $this->now()) . ' Uhr: ' . $label . ' (Vorbild ' . $this->fmtDay($refDate) . ')');
     }
 
@@ -817,7 +817,7 @@ class Schein extends IPSModule
     {
         $ts = strtotime($ymd . ' 12:00:00');
         $names = [1 => 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-        return ($names[(int)date('N', $ts)] ?? '') . ' ' . date('d.m.', $ts);
+        return ($names[(int)date('N', $ts)] ?? '') . ' ' . date('d.m.Y', $ts); // TT.MM.JJJJ, SUITE.md Store-Checkliste 9b
     }
 
     private function fmtJitter(int $sec): string
@@ -929,12 +929,12 @@ class Schein extends IPSModule
         }
         $lastLearn = $this->ReadAttributeInteger('LastLearnTs');
         if ($this->isActive()) {
-            $status = '🎭 Simulation AKTIV seit ' . date('d.m. H:i', $this->ReadAttributeInteger('ActiveSince')) . ' Uhr — ' . $playable . ' Kanal/Kanäle spielen ab. Nächste Schaltung: ' . ($this->GetValue('NextAction') ?: '—');
+            $status = '🎭 Simulation AKTIV seit ' . date('d.m.Y H:i', $this->ReadAttributeInteger('ActiveSince')) . ' Uhr — ' . $playable . ' Kanal/Kanäle spielen ab. Nächste Schaltung: ' . ($this->GetValue('NextAction') ?: '—');
         } elseif ($learning === 0) {
             $status = 'ℹ️ Noch kein Kanal aktiv — unten Kanäle anlegen und übernehmen.';
         } else {
             $status = '💤 Simulation aus — ' . $learning . ' Kanal/Kanäle lernen mit (' . $events . ' Schaltvorgänge im Lernfenster'
-                . ($lastLearn > 0 ? ', zuletzt ' . date('d.m. H:i:s', $lastLearn) . ' Uhr' : ', noch keiner') . ').';
+                . ($lastLearn > 0 ? ', zuletzt ' . date('d.m.Y H:i:s', $lastLearn) . ' Uhr' : ', noch keiner') . ').';
         }
         $astro = $this->hasLocationControl()
             ? '✅ Sonnenauf-/-untergang verfügbar (Symcon Location Control gefunden) — Zeitbezug „Sonnenuntergang"/„Sonnenaufgang" ist nutzbar.'
@@ -977,7 +977,7 @@ class Schein extends IPSModule
                 $summary[] = 'ℹ️ ' . $name . ': noch nichts gelernt.';
                 continue;
             }
-            $summary[] = '✅ ' . $name . ': ' . $n . ' Schaltvorgänge seit ' . date('d.m.', (int)$buf[0]['t']) . ', zuletzt ' . date('d.m. H:i', (int)$buf[$n - 1]['t']) . ' Uhr.';
+            $summary[] = '✅ ' . $name . ': ' . $n . ' Schaltvorgänge seit ' . date('d.m.Y', (int)$buf[0]['t']) . ', zuletzt ' . date('d.m.Y H:i', (int)$buf[$n - 1]['t']) . ' Uhr.';
         }
         return [
             'type' => 'ExpansionPanel', 'expanded' => true,
